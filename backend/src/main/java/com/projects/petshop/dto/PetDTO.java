@@ -2,6 +2,8 @@ package com.projects.petshop.dto;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import com.projects.petshop.entities.Pet;
@@ -17,6 +19,8 @@ public class PetDTO implements Serializable {
 	private Long clientId;
 	
 	private BreedDTO breed;
+	
+	private List<AssistanceDTO> assistances = new ArrayList<>();
 	
 	public PetDTO() {}
 	
@@ -85,6 +89,10 @@ public class PetDTO implements Serializable {
 
 	public void setBreed(BreedDTO breed) {
 		this.breed = breed;
+	}
+
+	public List<AssistanceDTO> getAssistances() {
+		return assistances;
 	}
 
 	@Override
