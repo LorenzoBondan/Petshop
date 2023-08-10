@@ -1,5 +1,6 @@
 package com.projects.petshop.services;
 
+import java.time.Instant;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
@@ -58,6 +59,10 @@ public class ClientService {
 	@Transactional
 	public ClientDTO insert(ClientDTO dto) {
 		Client entity = new Client();
+		
+		Instant date = Instant.now();
+		entity.setRegisterDate(date);
+		
 		copyDtoToEntity(dto, entity);
 		entity = repository.save(entity);
 		return new ClientDTO(entity);
@@ -67,6 +72,7 @@ public class ClientService {
 	public ClientDTO update(Long id, ClientDTO dto) {
 		try {
 			Client entity = repository.getOne(id);
+			entity.setRegisterDate(dto.getRegisterDate());
 			copyDtoToEntity(dto, entity);
 			entity = repository.save(entity);
 			return new ClientDTO(entity);
@@ -89,7 +95,7 @@ public class ClientService {
 	
 	private void copyDtoToEntity(ClientDTO dto, Client entity) {
 		entity.setName(dto.getName());
-		entity.setRegisterDate(dto.getRegisterDate());
+		//entity.setRegisterDate(dto.getRegisterDate());
 		entity.setUser(userRepository.findByCpf(dto.getUserCpf()));
 		entity.setImgUrl(dto.getImgUrl());
 		entity.setAddress(addressRepository.getOne(dto.getAddress().getId()));
