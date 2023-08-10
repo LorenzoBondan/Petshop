@@ -2,13 +2,19 @@ package com.projects.petshop.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -30,18 +36,22 @@ public class User implements UserDetails, Serializable{
 	private String password;
 	@Column(columnDefinition = "TEXT")
 	private String imgUrl;
-	private Role role;
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "tb_user_role",
+				joinColumns = @JoinColumn(name = "user_id"), 
+				inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles = new HashSet<>();
 	
 	public User() {}
 	
-	public User(Long id, String cpf, String name, String password, String imgUrl, Role role) {
+	public User(Long id, String cpf, String name, String password, String imgUrl) {
 		super();
 		this.id = id;
 		this.cpf = cpf;
 		this.name = name;
 		this.password = password;
 		this.imgUrl = imgUrl;
-		this.role = role;
 	}
 
 	public Long getId() {
@@ -84,19 +94,20 @@ public class User implements UserDetails, Serializable{
 		this.imgUrl = imgUrl;
 	}
 
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
-
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// PERCORRER CADA ELEMENTO DA LISTA DE ROLES E CONVERTER ELE PARA GRANTEDAUTHOTIRY
 		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getAuthority()))
 				.collect(Collectors.toList());
+	}
+	
+	public boolean hasRole(String roleName) {
+		for (Role role : roles) {
+			if(role.getAuthority().equals(roleName)) {
+				return true; 
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -122,15 +133,5 @@ public class User implements UserDetails, Serializable{
 	@Override
 	public boolean isEnabled() {
 		return true;
-	}
-	
-	// MÉTODO USADO PARA O SERVICE AUTHSERVICE, PARA SABER SE O USUÁRIO LOGADO É ADMIN
-	public boolean hasRole(String roleName) {
-		for (Role role : roles) {
-			if(role.getAuthority().equals(roleName)) {
-				return true; // ENCONTROU O QUE ESTAVA PROCURANDO
-			}
-		}
-		return false;
 	}
 }
