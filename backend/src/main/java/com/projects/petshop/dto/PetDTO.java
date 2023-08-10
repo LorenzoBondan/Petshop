@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
-import javax.persistence.Column;
-
 import com.projects.petshop.entities.Pet;
 
 public class PetDTO implements Serializable {
