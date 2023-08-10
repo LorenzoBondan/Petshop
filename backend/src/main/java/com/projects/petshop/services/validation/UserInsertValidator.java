@@ -8,10 +8,10 @@ import javax.validation.ConstraintValidatorContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.projects.AgiTask.resources.exceptions.FieldMessage;
 import com.projects.petshop.dto.UserInsertDTO;
 import com.projects.petshop.entities.User;
 import com.projects.petshop.repositories.UserRepository;
+import com.projects.petshop.resources.exceptions.FieldMessage;
 
 public class UserInsertValidator implements ConstraintValidator<UserInsertValid, UserInsertDTO> {
 	
@@ -27,10 +27,10 @@ public class UserInsertValidator implements ConstraintValidator<UserInsertValid,
 		
 		List<FieldMessage> list = new ArrayList<>();
 		
-		User user = repository.findByEmail(dto.getEmail());
+		User user = repository.findByCpf(dto.getCpf());
 		
 		if (user != null) {
-			list.add(new FieldMessage("email", "Este email já existe."));
+			list.add(new FieldMessage("cpf", "Este cpf já existe."));
 		}
 		
 		for (FieldMessage e : list) {

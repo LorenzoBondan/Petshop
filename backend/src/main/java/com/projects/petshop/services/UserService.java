@@ -19,10 +19,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.projects.petshop.dto.RoleDTO;
 import com.projects.petshop.dto.UserDTO;
+import com.projects.petshop.dto.UserInsertDTO;
+import com.projects.petshop.dto.UserUpdateDTO;
 import com.projects.petshop.entities.Role;
 import com.projects.petshop.entities.User;
+import com.projects.petshop.repositories.ClientRepository;
 import com.projects.petshop.repositories.RoleRepository;
 import com.projects.petshop.repositories.UserRepository;
+import com.projects.petshop.services.exceptions.DataBaseException;
+import com.projects.petshop.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -37,6 +42,9 @@ public class UserService implements UserDetailsService {
 
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	@Autowired
+	private ClientRepository clientRepository;
 	
 	@Transactional(readOnly = true)
 	public Page<UserDTO> findAllPaged(String name, Pageable pageable) {
@@ -96,6 +104,8 @@ public class UserService implements UserDetailsService {
 	private void copyDtoToEntity(UserDTO dto, User entity) {
 		entity.setCpf(dto.getCpf());
 		entity.setName(dto.getName());
+		
+		entity.setClient(clientRepository.getOne(dto.getClient().getId()));
 
 		for (RoleDTO rolDto : dto.getRoles()) {
 			Role role = roleRepository.getOne(rolDto.getId());

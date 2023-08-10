@@ -11,10 +11,10 @@ import javax.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerMapping;
 
-import com.projects.AgiTask.resources.exceptions.FieldMessage;
 import com.projects.petshop.dto.UserUpdateDTO;
 import com.projects.petshop.entities.User;
 import com.projects.petshop.repositories.UserRepository;
+import com.projects.petshop.resources.exceptions.FieldMessage;
 
 public class UserUpdateValidator implements ConstraintValidator<UserUpdateValid, UserUpdateDTO> {
 

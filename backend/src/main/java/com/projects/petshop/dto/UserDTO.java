@@ -17,20 +17,23 @@ public class UserDTO implements Serializable {
 	private String cpf;
 	@NotBlank(message = "Campo obrigatório")
 	private String name;
+	private ClientDTO client;
 	
 	private List<RoleDTO> roles = new ArrayList<>();
 
 	public UserDTO() {}
 
-	public UserDTO(String name, String cpf) {
+	public UserDTO(String name, String cpf, ClientDTO client) {
 		super();
 		this.name = name;
 		this.cpf = cpf;
+		this.client = client;
 	}
 	
 	public UserDTO(User entity) {
 		this.cpf = entity.getCpf();
 		this.name = entity.getName();
+		this.client = new ClientDTO(entity.getClient());
 		
 		entity.getRoles().forEach(rol -> this.roles.add(new RoleDTO(rol)));
 	}
@@ -49,6 +52,14 @@ public class UserDTO implements Serializable {
 
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
+	}
+
+	public ClientDTO getClient() {
+		return client;
+	}
+
+	public void setClient(ClientDTO client) {
+		this.client = client;
 	}
 
 	public List<RoleDTO> getRoles() {
