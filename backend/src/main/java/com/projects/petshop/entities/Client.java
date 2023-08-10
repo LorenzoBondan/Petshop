@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.lang.Nullable;
+
 @Entity
 @Table(name = "tb_client")
 public class Client implements Serializable{
@@ -32,13 +34,17 @@ private static final long serialVersionUID = 1L;
 	@JoinColumn(name = "user_id")
 	private User user;
 	
-	@OneToOne
-	@JoinColumn(name = "address_id")
+	@Nullable
+	@OneToOne(mappedBy = "client")
 	private Address address;
+	
+	@Nullable
+	@OneToOne(mappedBy = "client")
+	private Contact contact;
 	
 	public Client() {}
 
-	public Client(Long id, String name, Instant registerDate, String imgUrl, User user, Address address) {
+	public Client(Long id, String name, Instant registerDate, String imgUrl, User user, Address address, Contact contact) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -46,6 +52,7 @@ private static final long serialVersionUID = 1L;
 		this.imgUrl = imgUrl;
 		this.user = user;
 		this.address = address;
+		this.contact = contact;
 	}
 
 	public Long getId() {
@@ -94,6 +101,14 @@ private static final long serialVersionUID = 1L;
 
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+
+	public Contact getContact() {
+		return contact;
+	}
+
+	public void setContact(Contact contact) {
+		this.contact = contact;
 	}
 
 	@Override

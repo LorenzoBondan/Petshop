@@ -3,7 +3,6 @@ package com.projects.petshop.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,39 +11,31 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.springframework.lang.Nullable;
-
 @Entity
 @Table(name = "tb_address")
-public class Address implements Serializable {
+public class Contact implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(columnDefinition = "TEXT")
-	private String street;
-	private String city;
-	private String neighborhood;
-	@Nullable
-	private Integer complement;
 	private String tag;
+	private Boolean type; // true for email and false for phone number
+	private String value;
 	
     @OneToOne
     @JoinColumn(name = "client_id")
 	private Client client;
-	
-	public Address() {}
+    
+    public Contact() {}
 
-	public Address(Long id, String street, String city, String neighborhood, Integer complement, String tag, Client client) {
+	public Contact(Long id, String tag, Boolean type, String value, Client client) {
 		super();
 		this.id = id;
-		this.street = street;
-		this.city = city;
-		this.neighborhood = neighborhood;
-		this.complement = complement;
 		this.tag = tag;
+		this.type = type;
+		this.value = value;
 		this.client = client;
 	}
 
@@ -56,44 +47,28 @@ public class Address implements Serializable {
 		this.id = id;
 	}
 
-	public String getStreet() {
-		return street;
-	}
-
-	public void setStreet(String street) {
-		this.street = street;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getNeighborhood() {
-		return neighborhood;
-	}
-
-	public void setNeighborhood(String neighborhood) {
-		this.neighborhood = neighborhood;
-	}
-
-	public Integer getComplement() {
-		return complement;
-	}
-
-	public void setComplement(Integer complement) {
-		this.complement = complement;
-	}
-
 	public String getTag() {
 		return tag;
 	}
 
 	public void setTag(String tag) {
 		this.tag = tag;
+	}
+
+	public Boolean getType() {
+		return type;
+	}
+
+	public void setType(Boolean type) {
+		this.type = type;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 	public Client getClient() {
@@ -117,7 +92,7 @@ public class Address implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Address other = (Address) obj;
+		Contact other = (Contact) obj;
 		return Objects.equals(id, other.id);
 	}
 }
