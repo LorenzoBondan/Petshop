@@ -2,14 +2,18 @@ package com.projects.petshop.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -41,6 +45,9 @@ private static final long serialVersionUID = 1L;
 	@Nullable
 	@OneToOne(mappedBy = "client")
 	private Contact contact;
+	
+	@OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
+	private List<Pet> pets = new ArrayList<>();
 	
 	public Client() {}
 
@@ -109,6 +116,10 @@ private static final long serialVersionUID = 1L;
 
 	public void setContact(Contact contact) {
 		this.contact = contact;
+	}
+
+	public List<Pet> getPets() {
+		return pets;
 	}
 
 	@Override

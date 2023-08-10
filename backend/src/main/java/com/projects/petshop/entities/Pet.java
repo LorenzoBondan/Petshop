@@ -25,19 +25,27 @@ public class Pet implements Serializable {
 	private String name;
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant birthDate;
+	@Column(columnDefinition = "TEXT")
+	private String imgUrl;
 
 	@ManyToOne
     @JoinColumn(name = "client_id")
 	private Client client;
 	
+	@ManyToOne
+    @JoinColumn(name = "breed_id")
+	private Breed breed;
+	
 	public Pet() {}
 
-	public Pet(Long id, String name, Instant birthDate, Client client) {
+	public Pet(Long id, String name, Instant birthDate, String imgUrl, Client client, Breed breed) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.birthDate = birthDate;
+		this.imgUrl = imgUrl;
 		this.client = client;
+		this.breed = breed;
 	}
 
 	public Long getId() {
@@ -64,12 +72,28 @@ public class Pet implements Serializable {
 		this.birthDate = birthDate;
 	}
 
+	public String getImgUrl() {
+		return imgUrl;
+	}
+
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
+	}
+
 	public Client getClient() {
 		return client;
 	}
 
 	public void setClient(Client client) {
 		this.client = client;
+	}
+
+	public Breed getBreed() {
+		return breed;
+	}
+
+	public void setBreed(Breed breed) {
+		this.breed = breed;
 	}
 
 	@Override
