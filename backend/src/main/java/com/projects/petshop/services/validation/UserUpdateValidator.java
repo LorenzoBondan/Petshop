@@ -11,8 +11,8 @@ import javax.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerMapping;
 
-import com.projects.AgiTask.dto.UserUpdateDTO;
 import com.projects.AgiTask.resources.exceptions.FieldMessage;
+import com.projects.petshop.dto.UserUpdateDTO;
 import com.projects.petshop.entities.User;
 import com.projects.petshop.repositories.UserRepository;
 
@@ -33,14 +33,14 @@ public class UserUpdateValidator implements ConstraintValidator<UserUpdateValid,
 
 		@SuppressWarnings("unchecked")
 		var uriVars = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-		long userId = Long.parseLong(uriVars.get("id"));
+		String userCpf = uriVars.get("cpf").toString();
 
 		List<FieldMessage> list = new ArrayList<>();
 
-		User user = repository.findByEmail(dto.getEmail());
+		User user = repository.findByCpf(dto.getCpf());
 
-		if (user != null && userId != user.getId()) {
-			list.add(new FieldMessage("email", "Este email já existe."));
+		if (user != null && userCpf != user.getCpf()) {
+			list.add(new FieldMessage("cpf", "Este cpf já existe."));
 		}
 
 		for (FieldMessage e : list) {

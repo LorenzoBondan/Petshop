@@ -8,8 +8,8 @@ import javax.validation.ConstraintValidatorContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.projects.AgiTask.dto.UserInsertDTO;
 import com.projects.AgiTask.resources.exceptions.FieldMessage;
+import com.projects.petshop.dto.UserInsertDTO;
 import com.projects.petshop.entities.User;
 import com.projects.petshop.repositories.UserRepository;
 
