@@ -35,7 +35,7 @@ private static final long serialVersionUID = 1L;
 	private String imgUrl;
 	
 	@OneToOne
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "user_cpf")
 	private User user;
 	
 	@Nullable

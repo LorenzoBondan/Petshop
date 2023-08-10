@@ -38,7 +38,7 @@ public class User implements UserDetails, Serializable{
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "tb_user_role",
-				joinColumns = @JoinColumn(name = "user_id"), 
+				joinColumns = @JoinColumn(name = "user_cpf"), 
 				inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 	
