@@ -25,8 +25,14 @@ public class ClientDTO implements Serializable {
 	public ClientDTO() {}
 	
 	public ClientDTO(Client entity) {
-		
+		this.name = entity.getName();
+		this.imgUrl = entity.getImgUrl();
+		this.registerDate = entity.getRegisterDate();
 		this.userCpf = entity.getUser().getCpf();
+		this.address = new AddressDTO(entity.getAddress());
+		this.contact = new ContactDTO(entity.getContact());
+		
+		entity.getPets().forEach(pet -> this.getPets().add(new PetDTO(pet)));
 	}
 
 	public ClientDTO(Long id, String name, Instant registerDate, String imgUrl, String userCpf, AddressDTO address,

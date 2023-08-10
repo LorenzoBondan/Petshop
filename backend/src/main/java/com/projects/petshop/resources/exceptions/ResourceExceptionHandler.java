@@ -36,7 +36,7 @@ public class ResourceExceptionHandler {
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		StandardError err = new StandardError();
 		err.setTimestamp(Instant.now());
-		err.setStatus(status.value()); // 400
+		err.setStatus(status.value()); 
 		err.setError("Database exception");
 		err.setMessage(ex.getMessage());
 		err.setPath(request.getRequestURI());
@@ -49,7 +49,7 @@ public class ResourceExceptionHandler {
 		HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY; 
 		ValidationError err = new ValidationError();
 		err.setTimestamp(Instant.now());
-		err.setStatus(status.value()); // 400
+		err.setStatus(status.value());
 		err.setError("Validation exception");
 		err.setMessage(ex.getMessage());
 		err.setPath(request.getRequestURI());

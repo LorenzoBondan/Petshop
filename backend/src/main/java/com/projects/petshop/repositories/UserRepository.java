@@ -17,4 +17,5 @@ public interface UserRepository extends JpaRepository<User,Long>{
 			+ "WHERE (UPPER(obj.name) LIKE UPPER(CONCAT('%', :name, '%')) ) ORDER BY obj.name")
 	Page<User> find(String name, Pageable pageable);
 	
+	void deleteByCpf(String cpf);
 }

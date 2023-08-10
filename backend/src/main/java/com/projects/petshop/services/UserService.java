@@ -71,22 +71,22 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Transactional
-	public UserDTO update(Long id, UserUpdateDTO dto) {
+	public UserDTO update(String cpf, UserUpdateDTO dto) {
 		try {
-			User entity = repository.getOne(id);
+			User entity = repository.findByCpf(cpf);
 			copyDtoToEntity(dto, entity);
 			entity = repository.save(entity);
 			return new UserDTO(entity);
 		} catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException("Id not found " + id);
+			throw new ResourceNotFoundException("Cpf not found " + cpf);
 		}
 	}
 	
-	public void delete(Long id) {
+	public void delete(String cpf) {
 		try {
-			repository.deleteById(id);
+			repository.deleteByCpf(cpf);
 		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException("Id not found " + id);
+			throw new ResourceNotFoundException("Cpf not found " + cpf);
 		}
 
 		catch (DataIntegrityViolationException e) {
@@ -112,7 +112,7 @@ public class UserService implements UserDetailsService {
 
 		if (user == null) {
 			logger.error("User not found: " + username);
-			throw new UsernameNotFoundException("Email not found");
+			throw new UsernameNotFoundException("Cpf not found");
 		}
 		logger.info("User found: " + username);
 		return user;
