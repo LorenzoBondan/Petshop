@@ -34,8 +34,6 @@ public class User implements UserDetails, Serializable{
 	private String cpf;
 	private String name;
 	private String password;
-	@Column(columnDefinition = "TEXT")
-	private String imgUrl;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "tb_user_role",
@@ -45,13 +43,12 @@ public class User implements UserDetails, Serializable{
 	
 	public User() {}
 	
-	public User(Long id, String cpf, String name, String password, String imgUrl) {
+	public User(Long id, String cpf, String name, String password) {
 		super();
 		this.id = id;
 		this.cpf = cpf;
 		this.name = name;
 		this.password = password;
-		this.imgUrl = imgUrl;
 	}
 
 	public Long getId() {
@@ -84,14 +81,6 @@ public class User implements UserDetails, Serializable{
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getImgUrl() {
-		return imgUrl;
-	}
-
-	public void setImgUrl(String imgUrl) {
-		this.imgUrl = imgUrl;
 	}
 
 	@Override
