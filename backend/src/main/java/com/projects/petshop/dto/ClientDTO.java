@@ -16,7 +16,7 @@ public class ClientDTO implements Serializable {
 	private String name;
 	private Instant registerDate;
 	private String imgUrl;
-	private UserDTO user;
+	private String userCpf;
 	private AddressDTO address;
 	private ContactDTO contact;
 	
@@ -26,16 +26,17 @@ public class ClientDTO implements Serializable {
 	
 	public ClientDTO(Client entity) {
 		
+		this.userCpf = entity.getUser().getCpf();
 	}
 
-	public ClientDTO(Long id, String name, Instant registerDate, String imgUrl, UserDTO user, AddressDTO address,
+	public ClientDTO(Long id, String name, Instant registerDate, String imgUrl, String userCpf, AddressDTO address,
 			ContactDTO contact) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.registerDate = registerDate;
 		this.imgUrl = imgUrl;
-		this.user = user;
+		this.userCpf = userCpf;
 		this.address = address;
 		this.contact = contact;
 	}
@@ -72,12 +73,12 @@ public class ClientDTO implements Serializable {
 		this.imgUrl = imgUrl;
 	}
 
-	public UserDTO getUser() {
-		return user;
+	public String getUserCpf() {
+		return userCpf;
 	}
 
-	public void setUser(UserDTO user) {
-		this.user = user;
+	public void setUserCpf(String userCpf) {
+		this.userCpf = userCpf;
 	}
 
 	public AddressDTO getAddress() {
