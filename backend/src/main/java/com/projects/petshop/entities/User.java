@@ -3,14 +3,13 @@ package com.projects.petshop.entities;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -28,8 +27,6 @@ public class User implements UserDetails, Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 	@Column(unique = true)
 	private String cpf;
 	private String name;
@@ -43,20 +40,11 @@ public class User implements UserDetails, Serializable{
 	
 	public User() {}
 	
-	public User(Long id, String cpf, String name, String password) {
+	public User(String cpf, String name, String password) {
 		super();
-		this.id = id;
 		this.cpf = cpf;
 		this.name = name;
 		this.password = password;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getCpf() {
@@ -89,7 +77,6 @@ public class User implements UserDetails, Serializable{
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// PERCORRER CADA ELEMENTO DA LISTA DE ROLES E CONVERTER ELE PARA GRANTEDAUTHOTIRY
 		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getAuthority()))
 				.collect(Collectors.toList());
 	}
@@ -126,5 +113,22 @@ public class User implements UserDetails, Serializable{
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(cpf);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		return Objects.equals(cpf, other.cpf);
 	}
 }

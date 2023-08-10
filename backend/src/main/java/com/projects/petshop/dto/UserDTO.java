@@ -13,37 +13,26 @@ public class UserDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Long id;
-	@NotBlank(message = "Campo obrigatório")
-	private String name;
 	@NotBlank(message = "Campo obrigatório")
 	private String cpf;
+	@NotBlank(message = "Campo obrigatório")
+	private String name;
 	
 	private List<RoleDTO> roles = new ArrayList<>();
 
 	public UserDTO() {}
 
-	public UserDTO(Long id, String name, String cpf) {
+	public UserDTO(String name, String cpf) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.cpf = cpf;
 	}
 	
 	public UserDTO(User entity) {
-		this.id = entity.getId();
 		this.cpf = entity.getCpf();
 		this.name = entity.getName();
 		
 		entity.getRoles().forEach(rol -> this.roles.add(new RoleDTO(rol)));
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -68,7 +57,7 @@ public class UserDTO implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Objects.hash(cpf);
 	}
 
 	@Override
@@ -80,6 +69,6 @@ public class UserDTO implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		UserDTO other = (UserDTO) obj;
-		return Objects.equals(id, other.id);
+		return Objects.equals(cpf, other.cpf);
 	}
 }
