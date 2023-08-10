@@ -32,15 +32,20 @@ private static final long serialVersionUID = 1L;
 	@JoinColumn(name = "user_id")
 	private User user;
 	
+	@OneToOne
+	@JoinColumn(name = "address_id")
+	private Address address;
+	
 	public Client() {}
 
-	public Client(Long id, String name, Instant registerDate, String imgUrl, User user) {
+	public Client(Long id, String name, Instant registerDate, String imgUrl, User user, Address address) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.registerDate = registerDate;
 		this.imgUrl = imgUrl;
 		this.user = user;
+		this.address = address;
 	}
 
 	public Long getId() {
@@ -81,6 +86,14 @@ private static final long serialVersionUID = 1L;
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 
 	@Override
