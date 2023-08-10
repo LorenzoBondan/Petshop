@@ -51,13 +51,6 @@ public class UserService implements UserDetailsService {
 		Page<User> list = repository.find(name, pageable);
 		return list.map(x -> new UserDTO(x));
 	}
-
-	@Transactional(readOnly = true)
-	public UserDTO findById(Long id) {
-		Optional<User> obj = repository.findById(id);
-		User entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found."));
-		return new UserDTO(entity);
-	}
 	
 	@Transactional(readOnly = true)
 	public UserDTO findByCpf(String cpf) {
