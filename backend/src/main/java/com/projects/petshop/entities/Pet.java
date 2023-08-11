@@ -40,7 +40,7 @@ public class Pet implements Serializable {
     @JoinColumn(name = "breed_id")
 	private Breed breed;
 	
-	@OneToMany(mappedBy = "pet", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "pet", fetch = FetchType.EAGER)
 	private List<Assistance> assistances = new ArrayList<>();
 	
 	public Pet() {}

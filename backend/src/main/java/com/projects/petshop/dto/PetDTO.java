@@ -31,6 +31,8 @@ public class PetDTO implements Serializable {
 		this.imgUrl = entity.getImgUrl();
 		this.clientId = entity.getClient().getId();
 		this.breed = new BreedDTO(entity.getBreed());
+		
+		entity.getAssistances().forEach(assistance -> this.assistances.add(new AssistanceDTO(assistance)));
 	}
 
 	public PetDTO(Long id, String name, Instant birthDate, String imgUrl, Long clientId, BreedDTO breed) {
