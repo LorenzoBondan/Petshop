@@ -4,9 +4,11 @@ import java.time.Instant;
 
 import com.projects.petshop.dto.AddressDTO;
 import com.projects.petshop.dto.AssistanceDTO;
+import com.projects.petshop.dto.BreedDTO;
 import com.projects.petshop.dto.ClientDTO;
 import com.projects.petshop.entities.Address;
 import com.projects.petshop.entities.Assistance;
+import com.projects.petshop.entities.Breed;
 import com.projects.petshop.entities.Client;
 import com.projects.petshop.entities.Contact;
 import com.projects.petshop.entities.Pet;
@@ -48,5 +50,15 @@ public class Factory {
 	public static AssistanceDTO createAssistanceDTO() {
 		Assistance assistance = createAssistance();
 		return new AssistanceDTO(assistance);
+	}
+	
+	public static Breed createBreed() {
+		Breed breed = new Breed(1L, "Bulldog");
+		return breed;
+	}
+	
+	public static BreedDTO createBreedDTO() {
+		Breed breed = createBreed();
+		return new BreedDTO(breed);
 	}
 }
