@@ -45,8 +45,11 @@ public class Factory {
 	}
 	
 	public static Address createAddress() {
-		Client client = new Client();
-		Address address = new Address(1L, "Rua marques de souza", "Bento Gonçalves", "São Francisco", null, "tag", client);
+		User user = new User("123.654.789-10", "Julia", "123456");
+		Contact contact = new Contact();
+		Address address = new Address(1L, "Rua marques de souza", "Bento Gonçalves", "São Francisco", null, "tag", new Client());
+		Client client = new Client(1L, "Julia", Instant.parse("2020-07-14T10:00:00Z"), "img", user, address, contact);
+		address.setClient(client);
 		return address;
 	}
 	
