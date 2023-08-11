@@ -98,6 +98,7 @@ public class ClientService {
 		//entity.setRegisterDate(dto.getRegisterDate());
 		entity.setUser(userRepository.findByCpf(dto.getUserCpf()));
 		entity.setImgUrl(dto.getImgUrl());
+
 		entity.setAddress(addressRepository.getOne(dto.getAddress().getId()));
 		entity.setContact(contactRepository.getOne(dto.getContact().getId()));
 		

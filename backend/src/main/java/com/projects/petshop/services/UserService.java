@@ -1,5 +1,6 @@
 package com.projects.petshop.services;
 
+import java.time.Instant;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
@@ -21,9 +22,14 @@ import com.projects.petshop.dto.RoleDTO;
 import com.projects.petshop.dto.UserDTO;
 import com.projects.petshop.dto.UserInsertDTO;
 import com.projects.petshop.dto.UserUpdateDTO;
+import com.projects.petshop.entities.Address;
+import com.projects.petshop.entities.Client;
+import com.projects.petshop.entities.Contact;
 import com.projects.petshop.entities.Role;
 import com.projects.petshop.entities.User;
+import com.projects.petshop.repositories.AddressRepository;
 import com.projects.petshop.repositories.ClientRepository;
+import com.projects.petshop.repositories.ContactRepository;
 import com.projects.petshop.repositories.RoleRepository;
 import com.projects.petshop.repositories.UserRepository;
 import com.projects.petshop.services.exceptions.DataBaseException;
@@ -46,6 +52,12 @@ public class UserService implements UserDetailsService {
 	@Autowired
 	private ClientRepository clientRepository;
 	
+	@Autowired
+	private AddressRepository addressRepository;
+	
+	@Autowired
+	private ContactRepository contactRepository;
+	
 	@Transactional(readOnly = true)
 	public Page<UserDTO> findAllPaged(String name, Pageable pageable) {
 		Page<User> list = repository.find(name, pageable);
@@ -62,10 +74,36 @@ public class UserService implements UserDetailsService {
 	@Transactional
 	public UserDTO insert(UserInsertDTO dto) {
 		User entity = new User();
-		copyDtoToEntity(dto, entity);
+		entity.setCpf(dto.getCpf());
 
-		entity.setPassword(passwordEncoder.encode(dto.getPassword()));
+	    copyDtoToEntity(dto, entity);
+	    entity.setPassword(passwordEncoder.encode(dto.getPassword()));
 
+	    Client client = new Client();
+	    Address address = new Address();
+	    Contact contact = new Contact();
+
+	    client.setName(dto.getName());
+	    client.setImgUrl(null);
+	    client.setRegisterDate(Instant.now());
+	    client = clientRepository.save(client);
+
+	    address.setCity(null);
+	    address.setComplement(null);
+	    address.setNeighborhood(null);
+	    address.setStreet(null);
+	    address.setTag(null);
+	    address.setClient(client);
+	    address = addressRepository.save(address);
+
+	    contact.setTag(null);
+	    contact.setType(null);
+	    contact.setValue(null);
+	    contact.setClient(client);
+	    contact = contactRepository.save(contact);
+	        
+	    entity.setClient(client);
+	    
 		entity = repository.save(entity);
 		return new UserDTO(entity);
 	}
@@ -98,8 +136,10 @@ public class UserService implements UserDetailsService {
 		entity.setCpf(dto.getCpf());
 		entity.setName(dto.getName());
 		
-		entity.setClient(clientRepository.getOne(dto.getClient().getId()));
-
+		if(dto.getClientId() != null) {
+			entity.setClient(clientRepository.getOne(dto.getClientId()));
+		}
+		
 		for (RoleDTO rolDto : dto.getRoles()) {
 			Role role = roleRepository.getOne(rolDto.getId());
 			entity.getRoles().add(role);

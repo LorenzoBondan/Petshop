@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.lang.Nullable;
+
 @Entity
 @Table(name = "tb_contact")
 public class Contact implements Serializable {
@@ -20,8 +22,11 @@ public class Contact implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Nullable
 	private String tag;
+	@Nullable
 	private Boolean type; // true for email and false for phone number
+	@Nullable
 	private String value;
 	
     @OneToOne

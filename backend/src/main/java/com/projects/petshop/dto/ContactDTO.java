@@ -22,7 +22,10 @@ public class ContactDTO implements Serializable {
 		this.tag = entity.getTag();
 		this.type = entity.getType();
 		this.value = entity.getValue();
-		this.clientId = entity.getClient().getId();
+		if(entity.getClient() != null) {
+			this.clientId = entity.getClient().getId();
+		}
+		
 	}
 	
 	public ContactDTO(Long id, String tag, Boolean type, String value, Long clientId) {

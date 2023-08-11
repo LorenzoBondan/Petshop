@@ -33,7 +33,8 @@ public class User implements UserDetails, Serializable{
 	private String name;
 	private String password;
 	
-	@OneToOne(mappedBy = "user")
+	@OneToOne
+	@JoinColumn(name = "client_id")
 	private Client client;
 	
 	@ManyToMany(fetch = FetchType.EAGER)

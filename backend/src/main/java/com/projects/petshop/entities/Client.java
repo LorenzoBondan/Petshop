@@ -12,7 +12,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -23,7 +22,7 @@ import org.springframework.lang.Nullable;
 @Table(name = "tb_client")
 public class Client implements Serializable{
 	
-private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,22 +30,20 @@ private static final long serialVersionUID = 1L;
 	private String name;
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant registerDate;
+	@Nullable
 	@Column(columnDefinition = "TEXT")
 	private String imgUrl;
 	
-	@OneToOne
-	@JoinColumn(name = "user_cpf")
+	@OneToOne(mappedBy = "client")
 	private User user;
 	
-	@Nullable
 	@OneToOne(mappedBy = "client")
 	private Address address;
-	
-	@Nullable
+
 	@OneToOne(mappedBy = "client")
 	private Contact contact;
 	
-	@OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
 	private List<Pet> pets = new ArrayList<>();
 	
 	public Client() {}

@@ -23,12 +23,16 @@ public class Address implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Nullable
 	@Column(columnDefinition = "TEXT")
 	private String street;
+	@Nullable
 	private String city;
+	@Nullable
 	private String neighborhood;
 	@Nullable
 	private Integer complement;
+	@Nullable
 	private String tag;
 	
     @OneToOne

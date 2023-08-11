@@ -25,6 +25,7 @@ public class ClientDTO implements Serializable {
 	public ClientDTO() {}
 	
 	public ClientDTO(Client entity) {
+		this.id = entity.getId();
 		this.name = entity.getName();
 		this.imgUrl = entity.getImgUrl();
 		this.registerDate = entity.getRegisterDate();
