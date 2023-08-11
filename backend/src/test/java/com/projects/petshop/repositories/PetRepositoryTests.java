@@ -59,8 +59,20 @@ public class PetRepositoryTests {
 	}
 	
 	@Test
+	public void getByIdShouldReturnNotEmptyObjectWhenIdExists() {
+		Pet result = repository.getById(existingId);
+		Assertions.assertNotNull(result);
+	}
+	
+	@Test
 	public void findByIdShouldReturnEmptyObjectWhenIdNotExists() {
 		Optional<Pet> result = repository.findById(nonExistingId);
 		Assertions.assertFalse(result.isPresent());
+	}
+	
+	@Test
+	public void getByIdShouldReturnEmptyObjectWhenIdNotExists() {
+		Pet result = repository.getById(nonExistingId);
+		Assertions.assertNull(result);
 	}
 }

@@ -8,6 +8,7 @@ import com.projects.petshop.dto.BreedDTO;
 import com.projects.petshop.dto.ClientDTO;
 import com.projects.petshop.dto.ContactDTO;
 import com.projects.petshop.dto.PetDTO;
+import com.projects.petshop.dto.UserDTO;
 import com.projects.petshop.entities.Address;
 import com.projects.petshop.entities.Assistance;
 import com.projects.petshop.entities.Breed;
@@ -31,6 +32,16 @@ public class Factory {
 	public static ClientDTO createClientDTO() {
 		Client client = createClient();
 		return new ClientDTO(client);
+	}
+	
+	public static User createUser() {
+		User user = new User("123.456.789-10", "Bob", "123456", new Client());
+		return user;
+	}
+	
+	public static UserDTO createUserDTO() {
+		User user = createUser();
+		return new UserDTO(user);
 	}
 	
 	public static Address createAddress() {
