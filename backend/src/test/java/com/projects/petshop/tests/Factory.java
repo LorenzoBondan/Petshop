@@ -9,6 +9,8 @@ import com.projects.petshop.dto.ClientDTO;
 import com.projects.petshop.dto.ContactDTO;
 import com.projects.petshop.dto.PetDTO;
 import com.projects.petshop.dto.UserDTO;
+import com.projects.petshop.dto.UserInsertDTO;
+import com.projects.petshop.dto.UserUpdateDTO;
 import com.projects.petshop.entities.Address;
 import com.projects.petshop.entities.Assistance;
 import com.projects.petshop.entities.Breed;
@@ -44,6 +46,21 @@ public class Factory {
 		User user = createUser();
 		return new UserDTO(user);
 	}
+	
+    public static UserUpdateDTO createUserUpdateDTO(UserDTO userDto) {
+        UserUpdateDTO updateDto = new UserUpdateDTO();
+        updateDto.setName(userDto.getName());
+        updateDto.setCpf(userDto.getCpf());
+        return updateDto;
+    }
+
+    public static UserInsertDTO createUserInsertDTO() {
+        UserInsertDTO dto = new UserInsertDTO();
+        dto.setName("Alice");
+        dto.setCpf("987.654.321-00");
+        dto.setPassword("myPassword");
+        return dto;
+    }
 	
 	public static Address createAddress() {
 		User user = new User("123.654.789-10", "Julia", "123456");
