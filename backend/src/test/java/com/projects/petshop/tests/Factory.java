@@ -6,6 +6,7 @@ import com.projects.petshop.dto.AddressDTO;
 import com.projects.petshop.dto.AssistanceDTO;
 import com.projects.petshop.dto.BreedDTO;
 import com.projects.petshop.dto.ClientDTO;
+import com.projects.petshop.dto.ContactDTO;
 import com.projects.petshop.entities.Address;
 import com.projects.petshop.entities.Assistance;
 import com.projects.petshop.entities.Breed;
@@ -60,5 +61,15 @@ public class Factory {
 	public static BreedDTO createBreedDTO() {
 		Breed breed = createBreed();
 		return new BreedDTO(breed);
+	}
+	
+	public static Contact createContact() {
+		Contact contact = new Contact(1L, "Tag", true, "contact@email.com", new Client());
+		return contact;
+	}
+	
+	public static ContactDTO createContactDTO() {
+		Contact contact = createContact();
+		return new ContactDTO(contact);
 	}
 }
