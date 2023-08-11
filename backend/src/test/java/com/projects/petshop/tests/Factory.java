@@ -21,11 +21,12 @@ public class Factory {
 
 	public static Client createClient() {
 		User user = new User("123.654.789-10", "Julia", "123456");
-		Address address = new Address();
-		Contact contact = new Contact();
+		Address address = new Address(1L, "Rua marques de souza", "Bento Gonçalves", "São Francisco", null, "tag", new Client());
+		Contact contact = new Contact(1L, "Tag", true, "contact@email.com", new Client());
 		Client client = new Client(1L, "Julia", Instant.parse("2020-07-14T10:00:00Z"), "img", user, address, contact);
 		address.setClient(client);
 		contact.setClient(client);
+		user.setClient(client);
 		return client;
 	} 
 	
