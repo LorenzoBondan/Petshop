@@ -40,6 +40,7 @@ public class PetResource {
 		return ResponseEntity.ok().body(dto);
 	}
 	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@PostMapping
 	public ResponseEntity<PetDTO> insert (@RequestBody PetDTO dto) {
 		dto = service.insert(dto);
