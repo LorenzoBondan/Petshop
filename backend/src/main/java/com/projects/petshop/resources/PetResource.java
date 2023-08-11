@@ -2,6 +2,7 @@ package com.projects.petshop.resources;
 
 import java.net.URI;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.projects.petshop.dto.PetDTO;
+import com.projects.petshop.entities.Pet;
+import com.projects.petshop.entities.User;
+import com.projects.petshop.repositories.PetRepository;
+import com.projects.petshop.services.AuthService;
 import com.projects.petshop.services.PetService;
+import com.projects.petshop.services.exceptions.UnauthorizedException;
 
 @RestController
 @RequestMapping(value = "/pets")
@@ -26,6 +32,12 @@ public class PetResource {
 	
 	@Autowired
 	private PetService service;
+	
+	@Autowired
+	private AuthService authService;
+	
+	@Autowired
+	private PetRepository repository;
 	
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@GetMapping
@@ -36,6 +48,12 @@ public class PetResource {
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<PetDTO> findById(@PathVariable Long id) {
+		User user = authService.authenticated();
+		Pet pet = repository.getById(id);
+		User petOwner =  pet.getClient().getUser();
+		if(!authService.isAdmin() && !petOwner.getCpf().equals(user.getCpf())) {
+			throw new UnauthorizedException("You can't see information about a pet that is not yours");
+		}
 		PetDTO dto = service.findById(id);	
 		return ResponseEntity.ok().body(dto);
 	}
@@ -51,6 +69,12 @@ public class PetResource {
 	
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<PetDTO> update(@PathVariable Long id, @RequestBody PetDTO dto) {
+		User user = authService.authenticated();
+		Pet pet = repository.getById(id);
+		User petOwner =  pet.getClient().getUser();
+		if(!authService.isAdmin() && !petOwner.getCpf().equals(user.getCpf())) {
+			throw new UnauthorizedException("You can't update information about a pet that is not yours");
+		}
 		dto = service.update(id, dto);
 		return ResponseEntity.ok().body(dto);
 	}

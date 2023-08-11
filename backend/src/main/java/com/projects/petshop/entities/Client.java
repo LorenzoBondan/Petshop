@@ -43,7 +43,7 @@ public class Client implements Serializable{
 	@OneToOne(mappedBy = "client")
 	private Contact contact;
 	
-	@OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
 	private List<Pet> pets = new ArrayList<>();
 	
 	public Client() {}

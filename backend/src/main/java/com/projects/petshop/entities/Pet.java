@@ -32,7 +32,7 @@ public class Pet implements Serializable {
 	@Column(columnDefinition = "TEXT")
 	private String imgUrl;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id")
 	private Client client;
 	
@@ -40,7 +40,7 @@ public class Pet implements Serializable {
     @JoinColumn(name = "breed_id")
 	private Breed breed;
 	
-	@OneToMany(mappedBy = "pet", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "pet", fetch = FetchType.LAZY)
 	private List<Assistance> assistances = new ArrayList<>();
 	
 	public Pet() {}
