@@ -84,21 +84,12 @@ public class UserService implements UserDetailsService {
 	    Contact contact = new Contact();
 
 	    client.setName(dto.getName());
-	    client.setImgUrl(null);
 	    client.setRegisterDate(Instant.now());
 	    client = clientRepository.save(client);
 
-	    address.setCity(null);
-	    address.setComplement(null);
-	    address.setNeighborhood(null);
-	    address.setStreet(null);
-	    address.setTag(null);
 	    address.setClient(client);
 	    address = addressRepository.save(address);
 
-	    contact.setTag(null);
-	    contact.setType(null);
-	    contact.setValue(null);
 	    contact.setClient(client);
 	    contact = contactRepository.save(contact);
 	        
