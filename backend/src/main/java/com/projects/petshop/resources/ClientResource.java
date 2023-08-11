@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.projects.petshop.dto.ClientDTO;
+import com.projects.petshop.entities.User;
+import com.projects.petshop.services.AuthService;
 import com.projects.petshop.services.ClientService;
+import com.projects.petshop.services.exceptions.UnauthorizedException;
 
 @RestController
 @RequestMapping(value = "/clients")
@@ -26,6 +29,9 @@ public class ClientResource {
 
 	@Autowired
 	private ClientService service;
+	
+	@Autowired
+	private AuthService authService;
 	
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@GetMapping
@@ -36,6 +42,10 @@ public class ClientResource {
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<ClientDTO> findById(@PathVariable Long id) {
+		User user = authService.authenticated();
+		if(!authService.isAdmin() && id != user.getClient().getId()) {
+			throw new UnauthorizedException("You can't see information that is not yours");
+		}
 		ClientDTO dto = service.findById(id);	
 		return ResponseEntity.ok().body(dto);
 	}
@@ -51,6 +61,10 @@ public class ClientResource {
 	
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<ClientDTO> update(@PathVariable Long id, @RequestBody ClientDTO dto) {
+		User user = authService.authenticated();
+		if(!authService.isAdmin() && id != user.getClient().getId()) {
+			throw new UnauthorizedException("You can't update information that is not yours");
+		}
 		dto = service.update(id, dto);
 		return ResponseEntity.ok().body(dto);
 	}
