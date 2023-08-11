@@ -2,6 +2,7 @@ package com.projects.petshop.tests;
 
 import java.time.Instant;
 
+import com.projects.petshop.dto.AddressDTO;
 import com.projects.petshop.dto.ClientDTO;
 import com.projects.petshop.entities.Address;
 import com.projects.petshop.entities.Client;
@@ -25,5 +26,14 @@ public class Factory {
 		return new ClientDTO(client);
 	}
 	
-
+	public static Address createAddress() {
+		Client client = new Client();
+		Address address = new Address(1L, "Rua marques de souza", "Bento Gonçalves", "São Francisco", null, "tag", client);
+		return address;
+	}
+	
+	public static AddressDTO createAddressDTO() {
+		Address address = createAddress();
+		return new AddressDTO(address);
+	}
 }
