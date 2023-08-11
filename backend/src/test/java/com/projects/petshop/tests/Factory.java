@@ -59,7 +59,8 @@ public class Factory {
 	}
 	
 	public static Assistance createAssistance() {
-		Assistance assistance = new Assistance(1L, "First assistance", 100.0, Instant.parse("2020-07-14T10:00:00Z"), new Pet());
+		Pet pet = new Pet(1L, "Bob", Instant.parse("2020-07-14T10:00:00Z"), "img", new Client(), new Breed());
+		Assistance assistance = new Assistance(1L, "First assistance", 100.0, Instant.parse("2020-07-14T10:00:00Z"), pet);
 		return assistance;
 	}
 	
