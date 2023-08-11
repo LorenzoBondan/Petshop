@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.projects.petshop.entities.User;
 import com.projects.petshop.repositories.UserRepository;
-import com.projects.petshop.services.exceptions.ForbiddenException;
 import com.projects.petshop.services.exceptions.UnauthorizedException;
 
 @Service
@@ -31,7 +30,7 @@ public class AuthService {
 		User user = authenticated();
 		
 		if(!user.getCpf().equals(userCpf) && !user.hasRole("ROLE_ADMIN")) { 
-			throw new ForbiddenException("Access denied");
+			throw new UnauthorizedException("Access denied");
 		}
 	}
 	
