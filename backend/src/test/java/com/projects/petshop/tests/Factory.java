@@ -91,7 +91,8 @@ public class Factory {
 	}
 	
 	public static Pet createPet() {
-		Pet pet = new Pet(1L, "Bob", Instant.parse("2020-07-14T10:00:00Z"), "img", new Client(), new Breed());
+		Client client = new Client(1L, "Julia", Instant.parse("2020-07-14T10:00:00Z"), "img", new User(), new Address(), new Contact());
+		Pet pet = new Pet(1L, "Bob", Instant.parse("2020-07-14T10:00:00Z"), "img", client, new Breed(1L, "Bulldog"));
 		return pet;
 	}
 	
