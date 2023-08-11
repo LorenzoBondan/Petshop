@@ -7,6 +7,7 @@ import com.projects.petshop.dto.AssistanceDTO;
 import com.projects.petshop.dto.BreedDTO;
 import com.projects.petshop.dto.ClientDTO;
 import com.projects.petshop.dto.ContactDTO;
+import com.projects.petshop.dto.PetDTO;
 import com.projects.petshop.entities.Address;
 import com.projects.petshop.entities.Assistance;
 import com.projects.petshop.entities.Breed;
@@ -71,5 +72,15 @@ public class Factory {
 	public static ContactDTO createContactDTO() {
 		Contact contact = createContact();
 		return new ContactDTO(contact);
+	}
+	
+	public static Pet createPet() {
+		Pet pet = new Pet(1L, "Bob", Instant.parse("2020-07-14T10:00:00Z"), "img", new Client(), new Breed());
+		return pet;
+	}
+	
+	public static PetDTO createPetDTO() {
+		Pet pet = createPet();
+		return new PetDTO(pet);
 	}
 }
