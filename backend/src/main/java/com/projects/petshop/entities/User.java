@@ -52,6 +52,13 @@ public class User implements UserDetails, Serializable{
 		this.password = password;
 		this.client = client;
 	}
+	
+	public User(String cpf, String name, String password) {
+		super();
+		this.cpf = cpf;
+		this.name = name;
+		this.password = password;
+	}
 
 	public String getCpf() {
 		return cpf;
