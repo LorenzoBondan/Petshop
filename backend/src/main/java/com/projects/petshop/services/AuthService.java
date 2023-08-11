@@ -34,4 +34,14 @@ public class AuthService {
 			throw new ForbiddenException("Access denied");
 		}
 	}
+	
+	public boolean isAdmin() {
+		User user = authenticated();
+		if(user.hasRole("ROLE_ADMIN")) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 }
