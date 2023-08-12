@@ -35,7 +35,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	
 	private static final String[] REGISTER = {"/users/**"};
 	
-	private static final String[] ADMIN = { "/users/**"  };
+	private static final String[] ADMIN = { "/users/**" };
 	
 	@Override
 	public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
@@ -58,7 +58,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		.antMatchers(HttpMethod.PUT, REGISTER).permitAll() // User info
 		.antMatchers(HttpMethod.DELETE, CLIENT_OR_ADMIN).permitAll()
 		.antMatchers(CLIENT_OR_ADMIN).hasAnyRole("OPERATOR", "ADMIN") 
-		.antMatchers(ADMIN).hasRole("ADMIN") 
+		.antMatchers(ADMIN).hasRole("ADMIN")
+		.antMatchers(HttpMethod.GET, ADMIN).permitAll() 
 		.anyRequest().authenticated();
 		
 		http.cors().configurationSource(corsConfigurationSource());

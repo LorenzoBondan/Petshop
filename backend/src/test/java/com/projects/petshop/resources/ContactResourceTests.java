@@ -50,7 +50,7 @@ public class ContactResourceTests {
 	void setUp() throws Exception{
 		
 		existingId = 1L; 
-		nonExistingId = 2L;
+		nonExistingId = 20L;
 		
 		username = "000.123.456-78"; // Maria, admin
 		password = "123456";

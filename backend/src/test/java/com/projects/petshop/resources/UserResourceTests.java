@@ -26,7 +26,6 @@ import com.projects.petshop.dto.UserDTO;
 import com.projects.petshop.services.UserService;
 import com.projects.petshop.services.exceptions.ResourceNotFoundException;
 import com.projects.petshop.tests.Factory;
-import com.projects.petshop.tests.TokenUtil;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -38,21 +37,11 @@ public class UserResourceTests {
 	@MockBean
 	private UserService service;
 	
-	@Autowired
-	private TokenUtil tokenUtil;
-	
 	private UserDTO userDTO;
 	private PageImpl<UserDTO> page;
 	
-	private Long existingId;
-	private Long nonExistingId;
-	
 	private String existingCpf;
 	private String nonExistingCpf;
-	
-	private String username;
-	private String password;
-	private String usernameClient;
 	
 	@Autowired
 	private ObjectMapper objectMapper;
@@ -60,21 +49,13 @@ public class UserResourceTests {
 	@BeforeEach
 	void setUp() throws Exception{
 		
-		existingId = 1L; 
-		nonExistingId = 2L;
-		
-		existingCpf = "000.123.456-78";
-		nonExistingCpf = "999.888.777-66";
-		
-		username = "000.123.456-78"; // Maria, admin
-		password = "123456";
-		
-		usernameClient = "123.456.789-00";
+		existingCpf = "000.123.456-78"; 
+		nonExistingCpf = "111.111.111-11";
 		
 		userDTO = Factory.createUserDTO();
 		page = new PageImpl<>(List.of(userDTO));
 		
-		Mockito.when(service.findAllPaged(ArgumentMatchers.anyString(), ArgumentMatchers.any())).thenReturn(page);
+		Mockito.when(service.findAllPaged(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(page);
 		
 		Mockito.when(service.findByCpf(existingCpf)).thenReturn(userDTO);
 		Mockito.when(service.findByCpf(nonExistingCpf)).thenThrow(ResourceNotFoundException.class);
@@ -90,7 +71,7 @@ public class UserResourceTests {
 	
 	@Test
 	public void findAllShouldReturnPage() throws Exception {
-		String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
+		String accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTE4OTM2NDYsInVzZXJfbmFtZSI6IjAwMC4xMjMuNDU2LTc4IiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfQ0xJRU5UIl0sImp0aSI6IjVlMzliYjJmLWY4NDgtNDkyZC1hNmVkLWQ2ZmY1ZmU0ZTgzOSIsImNsaWVudF9pZCI6Im15Y2xpZW50aWQiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiXX0.9ErtbIHVmgVaxLbv7sIYdy6Q6P30CAafGA39jOn9fsA";
 		String jsonBody = objectMapper.writeValueAsString(userDTO);
 		
 		mockMvc.perform(get("/users")
@@ -103,7 +84,7 @@ public class UserResourceTests {
 	
 	@Test
 	public void findAllShouldReturnForbiddenWhenNotAdmin() throws Exception {
-		String accessToken = tokenUtil.obtainAccessToken(mockMvc, usernameClient, password);
+		String accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTE4OTk4ODksInVzZXJfbmFtZSI6IjEyMy40NTYuNzg5LTAwIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DTElFTlQiXSwianRpIjoiNmNiNjE1YWItZmM2NC00ODFkLTkyZmItYzQ3NDQ1MGUxODMxIiwiY2xpZW50X2lkIjoibXljbGllbnRpZCIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSJdfQ.HRJM8V_BcR9-lNxQBmAp-EyjnnvEKTX2OTIuOdjq5zU";
 		String jsonBody = objectMapper.writeValueAsString(userDTO);
 		
 		mockMvc.perform(get("/users")
@@ -122,24 +103,24 @@ public class UserResourceTests {
 	
 	@Test
 	public void findByIdShouldReturnUserWhenIdExists() throws Exception {
-		String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
+		String accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTE4OTM2NDYsInVzZXJfbmFtZSI6IjAwMC4xMjMuNDU2LTc4IiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfQ0xJRU5UIl0sImp0aSI6IjVlMzliYjJmLWY4NDgtNDkyZC1hNmVkLWQ2ZmY1ZmU0ZTgzOSIsImNsaWVudF9pZCI6Im15Y2xpZW50aWQiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiXX0.9ErtbIHVmgVaxLbv7sIYdy6Q6P30CAafGA39jOn9fsA";
 		String jsonBody = objectMapper.writeValueAsString(userDTO);
 		
-		mockMvc.perform(get("/users/{id}", existingId)
+		mockMvc.perform(get("/users/{cpf}", existingCpf)
 			.header("Authorization", "Bearer " + accessToken)
 			.content(jsonBody)
 			.contentType(MediaType.APPLICATION_JSON)
 			.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.id").exists());
+			.andExpect(jsonPath("$.cpf").exists()); 
 	}
 	
 	@Test
 	public void findByIdShouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
-		String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
+		String accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTE4OTM2NDYsInVzZXJfbmFtZSI6IjAwMC4xMjMuNDU2LTc4IiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfQ0xJRU5UIl0sImp0aSI6IjVlMzliYjJmLWY4NDgtNDkyZC1hNmVkLWQ2ZmY1ZmU0ZTgzOSIsImNsaWVudF9pZCI6Im15Y2xpZW50aWQiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiXX0.9ErtbIHVmgVaxLbv7sIYdy6Q6P30CAafGA39jOn9fsA";
 		String jsonBody = objectMapper.writeValueAsString(userDTO);
 		
-		mockMvc.perform(get("/users/{id}", nonExistingId)
+		mockMvc.perform(get("/users/{cpf}", nonExistingCpf)
 			.header("Authorization", "Bearer " + accessToken)
 			.content(jsonBody)
 			.contentType(MediaType.APPLICATION_JSON)
@@ -149,43 +130,43 @@ public class UserResourceTests {
 	
 	@Test
 	public void findByIdShouldReturnUnauthorizedWhenNotLogged() throws Exception {
-		mockMvc.perform(get("/users/{id}", nonExistingId))
+		mockMvc.perform(get("/users/{cpf}", nonExistingCpf))
 			.andExpect(status().isUnauthorized());
 	}
 	
 	@Test
-	public void findByIdShouldReturnSelfWhenNotAdmin() throws Exception {
-		String accessToken = tokenUtil.obtainAccessToken(mockMvc, usernameClient, password);
+	public void findByIdShouldReturnForbiddenWhenNotAdmin() throws Exception {
+		String accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTE4OTk4ODksInVzZXJfbmFtZSI6IjEyMy40NTYuNzg5LTAwIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DTElFTlQiXSwianRpIjoiNmNiNjE1YWItZmM2NC00ODFkLTkyZmItYzQ3NDQ1MGUxODMxIiwiY2xpZW50X2lkIjoibXljbGllbnRpZCIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSJdfQ.HRJM8V_BcR9-lNxQBmAp-EyjnnvEKTX2OTIuOdjq5zU";
 		String jsonBody = objectMapper.writeValueAsString(userDTO);
 		
-		mockMvc.perform(get("/users/{id}", existingId)
+		mockMvc.perform(get("/users/{cpf}", existingCpf)
 				.header("Authorization", "Bearer " + accessToken)
 				.content(jsonBody)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()); 
+				.andExpect(status().isForbidden()); 
 	}
 	
 	@Test
 	public void updateShouldReturnUserWhenIdExists() throws Exception {
-		String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
+		String accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTE4OTM2NDYsInVzZXJfbmFtZSI6IjAwMC4xMjMuNDU2LTc4IiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfQ0xJRU5UIl0sImp0aSI6IjVlMzliYjJmLWY4NDgtNDkyZC1hNmVkLWQ2ZmY1ZmU0ZTgzOSIsImNsaWVudF9pZCI6Im15Y2xpZW50aWQiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiXX0.9ErtbIHVmgVaxLbv7sIYdy6Q6P30CAafGA39jOn9fsA";
 		String jsonBody = objectMapper.writeValueAsString(userDTO);
 		
-		mockMvc.perform(put("/users/{id}", existingId)
+		mockMvc.perform(put("/users/{cpf}", existingCpf)
 				.header("Authorization", "Bearer " + accessToken)
 				.content(jsonBody)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.id").exists()); 
+				.andExpect(jsonPath("$.cpf").exists()); 
 	}
 	
 	@Test
 	public void updateShouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
-		String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
+		String accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTE4OTM2NDYsInVzZXJfbmFtZSI6IjAwMC4xMjMuNDU2LTc4IiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfQ0xJRU5UIl0sImp0aSI6IjVlMzliYjJmLWY4NDgtNDkyZC1hNmVkLWQ2ZmY1ZmU0ZTgzOSIsImNsaWVudF9pZCI6Im15Y2xpZW50aWQiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiXX0.9ErtbIHVmgVaxLbv7sIYdy6Q6P30CAafGA39jOn9fsA";
 		String jsonBody = objectMapper.writeValueAsString(userDTO);
 		
-		mockMvc.perform(put("/users/{id}", nonExistingId)
+		mockMvc.perform(put("/users/{cpf}", nonExistingCpf)
 				.header("Authorization", "Bearer " + accessToken)
 				.content(jsonBody)
 				.contentType(MediaType.APPLICATION_JSON)
@@ -197,7 +178,7 @@ public class UserResourceTests {
 	public void updateShouldReturnUnauthorizedWhenNotLogged() throws Exception {
 		String jsonBody = objectMapper.writeValueAsString(userDTO);
 		
-		mockMvc.perform(put("/users/{id}", existingId)
+		mockMvc.perform(put("/users/{cpf}", existingCpf)
 			.content(jsonBody)
 			.contentType(MediaType.APPLICATION_JSON)
 			.accept(MediaType.APPLICATION_JSON))
@@ -205,15 +186,15 @@ public class UserResourceTests {
 	}
 	
 	@Test
-	public void updateShouldReturnSelfWhenNotAdmin() throws Exception {
-		String accessToken = tokenUtil.obtainAccessToken(mockMvc, usernameClient, password);
+	public void updateShouldReturnForbbidenWhenNotAdmin() throws Exception {
+		String accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTE4OTk4ODksInVzZXJfbmFtZSI6IjEyMy40NTYuNzg5LTAwIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9DTElFTlQiXSwianRpIjoiNmNiNjE1YWItZmM2NC00ODFkLTkyZmItYzQ3NDQ1MGUxODMxIiwiY2xpZW50X2lkIjoibXljbGllbnRpZCIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSJdfQ.HRJM8V_BcR9-lNxQBmAp-EyjnnvEKTX2OTIuOdjq5zU";
 		String jsonBody = objectMapper.writeValueAsString(userDTO);
 		
-		mockMvc.perform(put("/users/{id}", existingId)
+		mockMvc.perform(put("/users/{cpf}", existingCpf)
 				.header("Authorization", "Bearer " + accessToken)
 				.content(jsonBody)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()); 
+				.andExpect(status().isForbidden()); 
 	}
 }
