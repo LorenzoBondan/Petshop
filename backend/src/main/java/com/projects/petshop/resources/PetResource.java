@@ -45,6 +45,7 @@ public class PetResource {
 		return ResponseEntity.ok().body(list);
 	}
 
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<PetDTO> findById(@PathVariable Long id) {
 		User user = authService.authenticated();
@@ -66,6 +67,7 @@ public class PetResource {
 		return ResponseEntity.created(uri).body(dto);	
 	}
 	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<PetDTO> update(@PathVariable Long id, @RequestBody PetDTO dto) {
 		User user = authService.authenticated();
