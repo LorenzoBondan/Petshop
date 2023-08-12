@@ -23,6 +23,12 @@ import com.projects.petshop.services.AuthService;
 import com.projects.petshop.services.ClientService;
 import com.projects.petshop.services.exceptions.UnauthorizedException;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "petshop-API")
 @RestController
 @RequestMapping(value = "/clients")
 public class ClientResource {
@@ -33,6 +39,14 @@ public class ClientResource {
 	@Autowired
 	private AuthService authService;
 	
+	@Operation(summary = "Get all the clients", method = "GET")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Successful search"),
+			@ApiResponse(responseCode = "400", description = "Bad Request"),
+			@ApiResponse(responseCode = "401", description = "Unauthorized"),
+			@ApiResponse(responseCode = "403", description = "Forbbiden"),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error")
+	})
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@GetMapping
 	public ResponseEntity<Page<ClientDTO>> findAll(Pageable pageable){		
@@ -40,6 +54,13 @@ public class ClientResource {
 		return ResponseEntity.ok().body(list);
 	}
 	
+	@Operation(summary = "Get one assistance by id", method = "GET")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Successful search"),
+			@ApiResponse(responseCode = "400", description = "Bad Request"),
+			@ApiResponse(responseCode = "401", description = "Unauthorized"),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error")
+	})
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<ClientDTO> findById(@PathVariable Long id) {
@@ -51,6 +72,15 @@ public class ClientResource {
 		return ResponseEntity.ok().body(dto);
 	}
 	
+	@Operation(summary = "Insert a new client", method = "POST")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Successful insertion"),
+			@ApiResponse(responseCode = "400", description = "Bad Request"),
+			@ApiResponse(responseCode = "401", description = "Unauthorized"),
+			@ApiResponse(responseCode = "403", description = "Forbbiden"),
+			@ApiResponse(responseCode = "422", description = "Invalid Data"),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error")
+	})
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@PostMapping
 	public ResponseEntity<ClientDTO> insert (@RequestBody ClientDTO dto) {
@@ -60,6 +90,14 @@ public class ClientResource {
 		return ResponseEntity.created(uri).body(dto);	
 	}
 	
+	@Operation(summary = "Update an client", method = "PUT")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Updated successfully"),
+			@ApiResponse(responseCode = "400", description = "Bad Request"),
+			@ApiResponse(responseCode = "401", description = "Unauthorized"),
+			@ApiResponse(responseCode = "422", description = "Invalid Data"),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error")
+	})
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<ClientDTO> update(@PathVariable Long id, @RequestBody ClientDTO dto) {
@@ -71,6 +109,15 @@ public class ClientResource {
 		return ResponseEntity.ok().body(dto);
 	}
 	
+	@Operation(summary = "Delete an client", method = "DELETE")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "204", description = "Deleted Successfully"),
+			@ApiResponse(responseCode = "400", description = "Integrity Violation"),
+			@ApiResponse(responseCode = "401", description = "Unauthorized"),
+			@ApiResponse(responseCode = "403", description = "Forbbiden"),
+			@ApiResponse(responseCode = "404", description = "Object not found"),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error")
+	})
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<ClientDTO> delete(@PathVariable Long id) {
