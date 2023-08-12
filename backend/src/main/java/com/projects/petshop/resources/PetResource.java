@@ -50,6 +50,9 @@ public class PetResource {
 	public ResponseEntity<PetDTO> findById(@PathVariable Long id) {
 		User user = authService.authenticated();
 		Pet pet = repository.getById(id);
+	    if (pet == null) {
+	        return ResponseEntity.notFound().build();
+	    }
 		User petOwner =  pet.getClient().getUser();
 		if(!authService.isAdmin() && !petOwner.getCpf().equals(user.getCpf())) {
 			throw new UnauthorizedException("You can't see information about a pet that is not yours");
@@ -72,6 +75,9 @@ public class PetResource {
 	public ResponseEntity<PetDTO> update(@PathVariable Long id, @RequestBody PetDTO dto) {
 		User user = authService.authenticated();
 		Pet pet = repository.getById(id);
+	    if (pet == null) {
+	        return ResponseEntity.notFound().build();
+	    }
 		User petOwner =  pet.getClient().getUser();
 		if(!authService.isAdmin() && !petOwner.getCpf().equals(user.getCpf())) {
 			throw new UnauthorizedException("You can't update information about a pet that is not yours");

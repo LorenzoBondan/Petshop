@@ -43,6 +43,7 @@ public class UserResource {
 		return ResponseEntity.ok().body(list);
 	}
 	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
 	@GetMapping(value = "/{cpf}") 
 	public ResponseEntity<UserDTO> findByCpf(@PathVariable String cpf) {
 		authService.validateSelfOrAdmin(cpf);
@@ -59,6 +60,7 @@ public class UserResource {
 		return ResponseEntity.created(uri).body(newDto);	
 	}
 	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
 	@PutMapping(value = "/{cpf}")
 	public ResponseEntity<UserDTO> update(@PathVariable String cpf, @Valid @RequestBody UserUpdateDTO dto)	{
 		authService.validateSelfOrAdmin(cpf);
