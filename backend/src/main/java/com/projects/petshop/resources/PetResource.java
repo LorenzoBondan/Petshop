@@ -25,6 +25,12 @@ import com.projects.petshop.services.AuthService;
 import com.projects.petshop.services.PetService;
 import com.projects.petshop.services.exceptions.UnauthorizedException;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "petshop-API")
 @RestController
 @RequestMapping(value = "/pets")
 public class PetResource {
@@ -38,6 +44,14 @@ public class PetResource {
 	@Autowired
 	private PetRepository repository;
 	
+	@Operation(summary = "Get all the pets", method = "GET")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Successful search"),
+			@ApiResponse(responseCode = "400", description = "Bad Request"),
+			@ApiResponse(responseCode = "401", description = "Unauthorized"),
+			@ApiResponse(responseCode = "403", description = "Forbbiden"),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error")
+	})
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@GetMapping
 	public ResponseEntity<Page<PetDTO>> findAll(Pageable pageable){		
@@ -45,6 +59,13 @@ public class PetResource {
 		return ResponseEntity.ok().body(list);
 	}
 
+	@Operation(summary = "Get one pet by id", method = "GET")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Successful search"),
+			@ApiResponse(responseCode = "400", description = "Bad Request"),
+			@ApiResponse(responseCode = "401", description = "Unauthorized"),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error")
+	})
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<PetDTO> findById(@PathVariable Long id) {
@@ -61,6 +82,15 @@ public class PetResource {
 		return ResponseEntity.ok().body(dto);
 	}
 	
+	@Operation(summary = "Insert a new pet", method = "POST")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Successful insertion"),
+			@ApiResponse(responseCode = "400", description = "Bad Request"),
+			@ApiResponse(responseCode = "401", description = "Unauthorized"),
+			@ApiResponse(responseCode = "403", description = "Forbbiden"),
+			@ApiResponse(responseCode = "422", description = "Invalid Data"),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error")
+	})
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@PostMapping
 	public ResponseEntity<PetDTO> insert (@RequestBody PetDTO dto) {
@@ -70,6 +100,14 @@ public class PetResource {
 		return ResponseEntity.created(uri).body(dto);	
 	}
 	
+	@Operation(summary = "Update an pet", method = "PUT")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Updated successfully"),
+			@ApiResponse(responseCode = "400", description = "Bad Request"),
+			@ApiResponse(responseCode = "401", description = "Unauthorized"),
+			@ApiResponse(responseCode = "422", description = "Invalid Data"),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error")
+	})
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<PetDTO> update(@PathVariable Long id, @RequestBody PetDTO dto) {
@@ -86,6 +124,15 @@ public class PetResource {
 		return ResponseEntity.ok().body(dto);
 	}
 	
+	@Operation(summary = "Delete an client", method = "DELETE")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "204", description = "Deleted Successfully"),
+			@ApiResponse(responseCode = "400", description = "Integrity Violation"),
+			@ApiResponse(responseCode = "401", description = "Unauthorized"),
+			@ApiResponse(responseCode = "403", description = "Forbbiden"),
+			@ApiResponse(responseCode = "404", description = "Object not found"),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error")
+	})
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<PetDTO> delete(@PathVariable Long id) {
