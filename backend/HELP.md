@@ -73,6 +73,8 @@ Aqui estão os principais endpoints da API que você pode acessar:
 
 Esta é uma visão geral das operações possíveis. Consulte a documentação completa da API para obter detalhes sobre parâmetros, corpos de requisição e respostas para cada endpoint.
 
+Documentação disponível em http://localhost:8080/swagger-ui/index.html#/
+
 Se você tiver alguma dúvida ou encontrar problemas durante o uso da API, entre em contato com nossa equipe de suporte em [suporte@petshop.com](mailto:suporte@petshop.com).
 
 Agradecemos por utilizar nossa API de petshop!
