@@ -44,27 +44,29 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		
-		if (Arrays.asList(env.getActiveProfiles()).contains("test")) { 
-			http.headers().frameOptions().disable();
-		}
-		
-		http.authorizeRequests()
-		.antMatchers(PUBLIC).permitAll() 
-		.antMatchers(HttpMethod.GET, CLIENT_OR_ADMIN).permitAll() 
-		.antMatchers(HttpMethod.PUT, CLIENT_OR_ADMIN).permitAll() 
-		.antMatchers(HttpMethod.POST, REGISTER).permitAll()
-		.antMatchers(HttpMethod.GET, REGISTER).permitAll() // User info
-		.antMatchers(HttpMethod.PUT, REGISTER).permitAll() // User info
-		.antMatchers(HttpMethod.DELETE, CLIENT_OR_ADMIN).permitAll()
-		.antMatchers(CLIENT_OR_ADMIN).hasAnyRole("OPERATOR", "ADMIN") 
-		.antMatchers(ADMIN).hasRole("ADMIN")
-		.antMatchers(HttpMethod.GET, ADMIN).permitAll() 
-		.anyRequest().authenticated();
-		
-		http.cors().configurationSource(corsConfigurationSource());
+	    if (Arrays.asList(env.getActiveProfiles()).contains("test")) { 
+	        http.headers().frameOptions().disable();
+	    }
+	    
+	    http
+	        .authorizeRequests()
+	            .antMatchers(PUBLIC).permitAll()
+	            .antMatchers(HttpMethod.GET, CLIENT_OR_ADMIN).permitAll()
+	            .antMatchers(HttpMethod.PUT, CLIENT_OR_ADMIN).permitAll()
+	            .antMatchers(HttpMethod.POST, REGISTER).permitAll()
+	            .antMatchers(HttpMethod.GET, REGISTER).permitAll() // User info
+	            .antMatchers(HttpMethod.PUT, REGISTER).permitAll() // User info
+	            .antMatchers(HttpMethod.DELETE, CLIENT_OR_ADMIN).permitAll()
+	            .antMatchers(CLIENT_OR_ADMIN).hasAnyRole("OPERATOR", "ADMIN")
+	            .antMatchers(ADMIN).hasRole("ADMIN")
+	            .antMatchers(HttpMethod.GET, ADMIN).permitAll()
+	            .antMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+	            .anyRequest().authenticated()
+	            .and()
+	        .httpBasic()
+	            .and()
+	        .cors().configurationSource(corsConfigurationSource());
 	}
-
 
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
