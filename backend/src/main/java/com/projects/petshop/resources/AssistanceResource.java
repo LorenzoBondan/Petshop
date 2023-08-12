@@ -39,7 +39,6 @@ public class AssistanceResource {
 			@ApiResponse(responseCode = "400", description = "Bad Request"),
 			@ApiResponse(responseCode = "401", description = "Unauthorized"),
 			@ApiResponse(responseCode = "403", description = "Forbbiden"),
-			@ApiResponse(responseCode = "422", description = "Invalid Data"),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error")
 	})
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
@@ -55,7 +54,6 @@ public class AssistanceResource {
 			@ApiResponse(responseCode = "400", description = "Bad Request"),
 			@ApiResponse(responseCode = "401", description = "Unauthorized"),
 			@ApiResponse(responseCode = "403", description = "Forbbiden"),
-			@ApiResponse(responseCode = "422", description = "Invalid Data"),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error")
 	})
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
