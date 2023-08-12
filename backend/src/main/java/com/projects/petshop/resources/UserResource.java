@@ -33,7 +33,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "petshop-API")
+@Tag(name = "users-API")
 @RestController
 @RequestMapping(value = "/users")
 public class UserResource {
