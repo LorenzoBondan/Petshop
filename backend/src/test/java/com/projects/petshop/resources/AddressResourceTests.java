@@ -62,10 +62,8 @@ public class AddressResourceTests {
 	}
 	
 	@Test
-	public void updateShouldReturnProductWhenIdExists() throws Exception {
-		
+	public void updateShouldReturnAddressWhenIdExists() throws Exception {
 		String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
-		
 		String jsonBody = objectMapper.writeValueAsString(addressDTO);
 		
 		mockMvc.perform(put("/addresses/{id}", existingId)
@@ -79,9 +77,7 @@ public class AddressResourceTests {
 	
 	@Test
 	public void updateShouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
-		
 		String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
-		
 		String jsonBody = objectMapper.writeValueAsString(addressDTO);
 		
 		mockMvc.perform(put("/addresses/{id}", nonExistingId)

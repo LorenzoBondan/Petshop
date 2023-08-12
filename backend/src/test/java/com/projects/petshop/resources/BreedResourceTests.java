@@ -161,7 +161,7 @@ public class BreedResourceTests {
 	}
 	
 	@Test
-	public void updateShouldReturnProductWhenIdExists() throws Exception {
+	public void updateShouldReturnBreedWhenIdExists() throws Exception {
 		String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
 		String jsonBody = objectMapper.writeValueAsString(breedDTO);
 		

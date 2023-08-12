@@ -161,7 +161,7 @@ public class PetResourceTests {
 	}
 	
 	@Test
-	public void updateShouldReturnProductWhenIdExists() throws Exception {
+	public void updateShouldReturnPetWhenIdExists() throws Exception {
 		String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
 		String jsonBody = objectMapper.writeValueAsString(petDTO);
 		

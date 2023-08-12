@@ -142,6 +142,12 @@ public class ClientResourceTests {
 	}
 	
 	@Test
+	public void findByIdShouldReturnUnauthorizedWhenNotLogged() throws Exception {
+		mockMvc.perform(get("/clients/{id}", nonExistingId))
+			.andExpect(status().isUnauthorized());
+	}
+	
+	@Test
 	public void findByIdShouldReturnSelfWhenNotAdmin() throws Exception {
 		String accessToken = tokenUtil.obtainAccessToken(mockMvc, usernameClient, password);
 		String jsonBody = objectMapper.writeValueAsString(clientDTO);
@@ -155,7 +161,7 @@ public class ClientResourceTests {
 	}
 	
 	@Test
-	public void updateShouldReturnProductWhenIdExists() throws Exception {
+	public void updateShouldReturnClientWhenIdExists() throws Exception {
 		String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
 		String jsonBody = objectMapper.writeValueAsString(clientDTO);
 		
@@ -179,6 +185,17 @@ public class ClientResourceTests {
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	public void updateShouldReturnUnauthorizedWhenNotLogged() throws Exception {
+		String jsonBody = objectMapper.writeValueAsString(clientDTO);
+		
+		mockMvc.perform(put("/clients/{id}", existingId)
+			.content(jsonBody)
+			.contentType(MediaType.APPLICATION_JSON)
+			.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isUnauthorized());
 	}
 	
 	@Test
