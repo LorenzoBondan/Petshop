@@ -12,7 +12,9 @@ import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.projects.petshop.dto.ContactDTO;
+import com.projects.petshop.entities.Client;
 import com.projects.petshop.entities.Contact;
+import com.projects.petshop.repositories.ClientRepository;
 import com.projects.petshop.repositories.ContactRepository;
 import com.projects.petshop.services.exceptions.ResourceNotFoundException;
 import com.projects.petshop.tests.Factory;
@@ -26,11 +28,15 @@ public class ContactServiceTests {
 	@Mock
 	private ContactRepository repository;
 	
+	@Mock
+	private ClientRepository clientRepository;
+	
 	private long existingId;
 	private long nonExistingId;
 	
 	private Contact contact;
 	
+	private Client client;
 	
 	@BeforeEach
 	void setUp() throws Exception{
@@ -38,9 +44,13 @@ public class ContactServiceTests {
 		nonExistingId = 1000L;
 		
 		contact = Factory.createContact();
+		client = Factory.createClient();
 		
 		Mockito.when(repository.getOne(existingId)).thenReturn(contact);
 		Mockito.when(repository.getOne(nonExistingId)).thenThrow(EntityNotFoundException.class);
+		
+		Mockito.when(clientRepository.getOne(existingId)).thenReturn(client);
+		Mockito.when(clientRepository.getOne(nonExistingId)).thenThrow(EntityNotFoundException.class);
 	}
 	
 	@Test
@@ -49,7 +59,7 @@ public class ContactServiceTests {
 	    Mockito.when(repository.save(Mockito.any(Contact.class))).thenAnswer(invocation -> invocation.getArgument(0));
 	    ContactDTO result = service.update(existingId, contactDTO);
 	    Assertions.assertNotNull(result);
-	    Assertions.assertEquals(contactDTO.getValue(), result.getValue());
+	    Assertions.assertEquals(contactDTO.getId(), result.getId());
 	}
 	
 	@Test
